@@ -22,6 +22,7 @@ import repast.simphony.space.graph.Network;
 @AgentAnnot (displayName="Agent")
 public class GeneralAgent {
 	
+	private boolean startCoop;
 	private boolean cooperating;
 	
 	private double lastPayoff;
@@ -211,6 +212,18 @@ public class GeneralAgent {
 		}
 		game.updateAgentSets(this);
 	}
+
+	public boolean isStartCoop() {
+		return startCoop;
+	}
+
+
+
+	public void setStartCoop(boolean startCoop) {
+		this.startCoop = startCoop;
+	}
+
+
 
 	private void updateDegree(){
 		degree = personalNetwork.size();

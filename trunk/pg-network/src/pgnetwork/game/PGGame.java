@@ -159,6 +159,29 @@ public abstract class PGGame {
 		return (count != 0) ? ((double)sameCount / (double)count) : 0.0;
 	}
 	
+	public int[] getStrategyChanges(){
+		
+		int coopCoop = 0;
+		int coopDef = 0;
+		int defCoop = 0;
+		int defDef = 0;
+		
+		for (GeneralAgent agent : allAgents){
+			if (agent.isStartCoop())
+				if (agent.isCooperating())
+					coopCoop++;
+				else
+					coopDef++;
+			else
+				if (agent.isCooperating())
+					defCoop++;
+				else
+					defDef++;
+		}
+		
+		return new int[]{coopCoop,coopDef,defCoop,defDef};
+	}
+	
 	public double payoff(int coopSize, boolean cooperating, double degree, double samedegree){
 		double publicGood = pgValue * coopSize;
 		double contrCost = ((cooperating) ? 1.0 : 0.0) * cost1;

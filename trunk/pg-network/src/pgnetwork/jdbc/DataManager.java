@@ -64,7 +64,7 @@ public class DataManager {
 	}
 	
 	
-	public void save(double startDensity, double startSegregation, double startCoopRate, double coopRate, double density, double segregation){
+	public void save(double startDensity, double startSegregation, double startCoopRate, double coopRate, double density, double segregation, int[] strategyChanges){
 		
 		currentSweepEntry++;
 		
@@ -73,8 +73,8 @@ public class DataManager {
 			Statement stmt = con.createStatement();
 			
 			String query = "INSERT INTO ";
-			query += "sweep_entry (id, sweep_id, start_density, start_segregation, start_coop_rate, density, segregation, coop_rate)";
-			query += " VALUES ('" + currentSweepEntry + "', '" + currentSweep + "', '" + startDensity + "', '" + startSegregation + "', '" + startCoopRate + "', '" + density + "', '" + segregation + "', '" + coopRate + "')";
+			query += "sweep_entry (id, sweep_id, start_density, start_segregation, start_coop_rate, density, segregation, coop_rate, ch_coop_coop, ch_coop_def, ch_def_coop, ch_def_def)";
+			query += " VALUES ('" + currentSweepEntry + "', '" + currentSweep + "', '" + startDensity + "', '" + startSegregation + "', '" + startCoopRate + "', '" + density + "', '" + segregation + "', '" + coopRate + "', '" + strategyChanges[0] + "', '" + strategyChanges[1] + "', '" + strategyChanges[2] + "', '" + strategyChanges[3] + "')";
 //			System.out.println( "Query: " + query );
 			stmt.executeUpdate( query );
 			

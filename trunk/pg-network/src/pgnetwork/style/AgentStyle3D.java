@@ -32,7 +32,7 @@ public class AgentStyle3D implements Style3D<GeneralAgent> {
 	public TaggedBranchGroup getBranchGroup(GeneralAgent obj, TaggedBranchGroup group) {
 		if (group == null || group.getTag() == null){
 			group = new TaggedBranchGroup("DEFAULT");
-			Shape3D sphere = ShapeFactory.createSphere(0.05f, "DEFAULT");
+			Shape3D sphere = ShapeFactory.createSphere(0.07f, "DEFAULT");
 			sphere.setCapability(Shape3D.ALLOW_APPEARANCE_WRITE);
 			group.getBranchGroup().addChild(sphere);
 			return group;

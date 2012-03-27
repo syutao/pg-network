@@ -23,6 +23,7 @@ public class RationalAgent extends GeneralAgent {
 		super(network, game);
 		this.game = game;
 		this.setAction(isCooperating);
+		this.setStartCoop(isCooperating);
 		this.print = print;
 	}
 	
