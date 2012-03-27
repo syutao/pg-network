@@ -120,17 +120,17 @@ public class PGSuperGame {
 		if (game.terminate()){
 			
 			if (RunEnvironment.getInstance().isBatch()){
-				dataManager.save(startDensity, startSegregation, startCoopRate, coopRate, density, segregation);
-			}
+				dataManager.save(startDensity, startSegregation, startCoopRate, coopRate, density, segregation, game.getStrategyChanges());
 			
-			currentGame++;
+				currentGame++;
 			
-			if (currentGame > game.maxGames()){
-				schedule.setFinishing(true);
-				dataManager.closeConnection();
-			}
-			else { // new game with same parameters
-				initNewGame();
+				if (currentGame > game.maxGames()){
+					schedule.setFinishing(true);
+					dataManager.closeConnection();
+				}
+				else { // new game with same parameters
+					initNewGame();
+				}
 			}
 		}
 	}
