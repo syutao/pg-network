@@ -124,12 +124,10 @@ dev.off()
 data <- dbGetQuery(con, "select id, learning_2, init_coop_rate, init_density, init_segregation from sweep where rational = 0 and learning_1=0.1")
 
 data$avgCoop <- rep(0.0, length(data$id))
-data$avgCoopMax <- rep(0.0, length(data$id))
-data$avgCoopMin <- rep(0.0, length(data$id))
 data$avgDensity <- rep(0.0, length(data$id))
 
-data <- data[which(data$init_coop_rate == 0.5 ),]
-data <- data[which(data$init_density == 0.1 | data$init_density == 0.5 | data$init_density == 0.7),]
+data <- data[which(data$init_coop_rate == 0.5 | data$init_coop_rate == 0.7),]
+#data <- data[which(data$init_density == 0.1 | data$init_density == 0.5 | data$init_density == 0.7),]
 data <- data[which(data$init_segregation == 0.3 | data$init_segregation == 0.5 | data$init_segregation == 0.7 ),]
 data <- data[which(data$learning_2 == 0.2 | data$learning_2 == 0.5 | data$learning_2 == 0.8),]
 
@@ -138,30 +136,33 @@ for (id in data$id){
 	meanCoop <- mean(sweep_entries$coop_rate)
 
 	data[which(data$id==id),]$avgCoop <- meanCoop
-	coopSd <- sd(sweep_entries$coop_rate) / 2
-	data[which(data$id==id),]$sdCoopMin <- (meanCoop - coopSd)
-	data[which(data$id==id),]$sdCoopMax <- (meanCoop + coopSd)
+#	coopSd <- sd(sweep_entries$coop_rate) / 2
+#	data[which(data$id==id),]$sdCoopMin <- (meanCoop - coopSd)
+#	data[which(data$id==id),]$sdCoopMax <- (meanCoop + coopSd)
 	
 	data[which(data$id==id),]$avgDensity <- mean(sweep_entries$start_density)
 }
 
 xlabel <- as.expression(expression(paste("Average Initial Density (", delta[0], ")")))
-ylabel <- as.expression(expression(paste("Number of Cooperators (", mu, ")")))
+ylabel <- as.expression(expression(paste("Cooperation (", mu, ")")))
 
-p <- ggplot(data=data, aes(x=avgDensity, y=avgCoop, ymin=avgCoopMin, ymax=avgCoopMax, fill=factor(learning_2), linetype=factor(learning_2))) + #, fill=cost_2, linetype=cost_2))  
+data <- data[which(data$avgDensity <= 0.5),]
+
+p <- ggplot(data=data, aes(x=avgDensity, y=avgCoop, linetype=factor(learning_2))) + #, fill=cost_2, linetype=cost_2))  
 		geom_line()+ 
-		facet_wrap(~  init_segregation) +
+		facet_wrap(~  init_coop_rate * init_segregation) +
 		xlab(xlabel) + 
 		ylab(ylabel) + 
-		ylim(0.0, 1.0)  +   
-		scale_fill_grey()
+		scale_y_continuous(breaks=c(0.0,0.2,0.4,0.6,0.8)) +
+		scale_x_continuous(breaks=c(0.0,0.1,0.2,0.3,0.4)) +
+		scale_fill_grey() + 
 		#scale_x_continuous(breaks=c(0.0,0.25,0.5), limits=c(0, 0.6)) +
-		#guides(fill=guide_legend(title="Initial Strategy"))
+		guides(linetype=guide_legend(title=expression(paste("Network\nupdate (", l[2], ")"))))
 
 
-ggsave(p, file="output.pdf", width=8, height=5)
+#ggsave(p, file="output.pdf", width=8, height=5)
 
-cairo_ps(file='densCoopSeg.eps', width=6, height=4)
+cairo_ps(file='densCoopSegBack.eps', width=6, height=3)
 p
 dev.off()
 
